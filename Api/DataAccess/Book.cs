@@ -1,4 +1,6 @@
-﻿namespace Api.DataAccess;
+﻿using System;
+
+namespace Api.DataAccess;
 
 public partial class Book
 {
@@ -13,3 +15,4 @@ public partial class Book
     public Author Author { get; set; }
     public Genre Genre { get; set; }
 }
+
