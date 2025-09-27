@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Api.DataAccess;
 
 public partial class Book
 {
     public int Id { get; set; }
+    public string Title { get; set; }
 
-    public string Title { get; set; } = null!;
+    // Foreign keys
+    public int AuthorId { get; set; }
+    public int GenreId { get; set; }
 
-    public int? Publishedyear { get; set; }
-
-    public int? Genreid { get; set; }
-
-    public int? Authorid { get; set; }
-
-    public DateTime? Createdat { get; set; }
-
-    public virtual Author? Author { get; set; }
-
-    public virtual Genre? Genre { get; set; }
+    // Navigation properties
+    public Author Author { get; set; }
+    public Genre Genre { get; set; }
 }
+

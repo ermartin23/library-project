@@ -1,59 +1,97 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 using Api.DataAccess;
+using Api.Dtos;
 
-namespace Api.Controllers;
-
-[ApiController]
-[Route("api/[controller]")]
-public class GenreController : ControllerBase
+namespace Api.Controllers
 {
-    private readonly LibraryDbContext _context;
-
-    public GenreController(LibraryDbContext context)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class GenreController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly LibraryDbContext _context;
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var genres = await _context.Genres.ToListAsync();
-        return Ok(genres);
-    }
+        public GenreController(LibraryDbContext context)
+        {
+            _context = context;
+        }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
-    {
-        var genre = await _context.Genres.FindAsync(id);
-        if (genre == null) return NotFound();
-        return Ok(genre);
-    }
+        // GET all genres
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var genres = _context.Genres
+                .Select(g => new GenreDto
+                {
+                    Id = g.Id,
+                    Name = g.Name
+                })
+                .ToList();
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Genre genre)
-    {
-        _context.Genres.Add(genre);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetById), new { id = genre.Id }, genre);
-    }
+            return Ok(genres);
+        }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] Genre genre)
-    {
-        if (id != genre.Id) return BadRequest();
-        _context.Entry(genre).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-        return NoContent();
-    }
+        // GET genre by id
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var genre = _context.Genres
+                .Where(g => g.Id == id)
+                .Select(g => new GenreDto
+                {
+                    Id = g.Id,
+                    Name = g.Name
+                })
+                .FirstOrDefault();
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var genre = await _context.Genres.FindAsync(id);
-        if (genre == null) return NotFound();
-        _context.Genres.Remove(genre);
-        await _context.SaveChangesAsync();
-        return NoContent();
+            if (genre == null) return NotFound();
+            return Ok(genre);
+        }
+
+        // POST create new genre
+        [HttpPost]
+        public IActionResult Create([FromBody] GenreCreateDto dto)
+        {
+            var genre = new Genre
+            {
+                Name = dto.Name
+            };
+
+            _context.Genres.Add(genre);
+            _context.SaveChanges();
+
+            var result = new GenreDto
+            {
+                Id = genre.Id,
+                Name = genre.Name
+            };
+
+            return CreatedAtAction(nameof(GetById), new { id = genre.Id }, result);
+        }
+
+        // PUT update genre
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] GenreUpdateDto dto)
+        {
+            var genre = _context.Genres.Find(id);
+            if (genre == null) return NotFound();
+
+            genre.Name = dto.Name;
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+
+        // DELETE genre
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var genre = _context.Genres.Find(id);
+            if (genre == null) return NotFound();
+
+            _context.Genres.Remove(genre);
+            _context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }

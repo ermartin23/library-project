@@ -9,7 +9,7 @@ public partial class Genre
 
     public string Name { get; set; } = null!;
 
-    public DateTime? Createdat { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     public virtual ICollection<Book> Books { get; set; } = new List<Book>();
 }

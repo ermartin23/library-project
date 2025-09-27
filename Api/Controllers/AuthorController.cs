@@ -1,59 +1,98 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 using Api.DataAccess;
+using Api.Dtos;
 
-namespace Api.Controllers;
-
-[ApiController]
-[Route("api/[controller]")]
-public class AuthorController : ControllerBase
+namespace Api.Controllers
 {
-    private readonly LibraryDbContext _context;
-
-    public AuthorController(LibraryDbContext context)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthorController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly LibraryDbContext _context;
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var authors = await _context.Authors.ToListAsync();
-        return Ok(authors);
-    }
+        public AuthorController(LibraryDbContext context)
+        {
+            _context = context;
+        }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
-    {
-        var author = await _context.Authors.FindAsync(id);
-        if (author == null) return NotFound();
-        return Ok(author);
-    }
+        // GET all authors
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var authors = _context.Authors
+                .Select(a => new AuthorDto
+                {
+                    Id = a.Id,
+                    Name = a.Name
+                })
+                .ToList();
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Author author)
-    {
-        _context.Authors.Add(author);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetById), new { id = author.Id }, author);
-    }
+            return Ok(authors);
+        }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] Author author)
-    {
-        if (id != author.Id) return BadRequest();
-        _context.Entry(author).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-        return NoContent();
-    }
+        // GET author by id
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var author = _context.Authors
+                .Where(a => a.Id == id)
+                .Select(a => new AuthorDto
+                {
+                    Id = a.Id,
+                    Name = a.Name
+                })
+                .FirstOrDefault();
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var author = await _context.Authors.FindAsync(id);
-        if (author == null) return NotFound();
-        _context.Authors.Remove(author);
-        await _context.SaveChangesAsync();
-        return NoContent();
+            if (author == null) return NotFound();
+            return Ok(author);
+        }
+
+        // POST create new author
+        [HttpPost]
+        public IActionResult Create([FromBody] AuthorCreateDto dto)
+        {
+            var author = new Author
+            {
+                Name = dto.Name
+            };
+
+            _context.Authors.Add(author);
+            _context.SaveChanges();
+
+            var result = new AuthorDto
+            {
+                Id = author.Id,
+                Name = author.Name
+            };
+
+            return CreatedAtAction(nameof(GetById), new { id = author.Id }, result);
+        }
+
+        // PUT update author
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] AuthorUpdateDto dto)
+        {
+            var author = _context.Authors.Find(id);
+            if (author == null) return NotFound();
+
+            author.Name = dto.Name;
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+
+        // DELETE author
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var author = _context.Authors.Find(id);
+            if (author == null) return NotFound();
+
+            _context.Authors.Remove(author);
+            _context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }
+
