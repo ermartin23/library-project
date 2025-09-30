@@ -28,7 +28,7 @@ app.MapGet("/", () => "Library API is running");
 // Controllers
 app.MapControllers();
 
-// ✅ Run seeding
+//  seeding
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
