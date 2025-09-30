@@ -8,36 +8,8 @@ A full-stack library management system with CRUD operations, Swagger API documen
 🗄️ Neon Database integration
 
 library-project/
-├── Api/                          # Backend API (.NET Core)
-│   ├── Controllers/              # API Controllers
-│   │   ├── AuthorController.cs
-│   │   ├── BookController.cs
-│   │   └── GenreController.cs
-│   ├── DataAccess/              # Data access layer
-│   ├── Dtos/                    # Data transfer objects (Author,Books and Genre Dtos.cs)
-│   ├── Migrations/              # Database migrations
-│   ├── Api.http                 # HTTP request 
-│   ├── appsettings.json         # Configuration
-│   ├── appsettings.Development.json
-│   ├── Dockerfile               # Docker configuration
-│   ├── fly.toml                 # Fly.io deployment config
-│   └── Program.cs               # Application entry point
-│
-├── frontend/                    
-│   ├── dist/                    # Build output
-│   ├── node_modules/            # Dependencies
-│   ├── public/                  # Static assets
-│   ├── src/                     # Source code
-│   │   ├── components/         # React components
-│   │   ├── pages/              # Page components
-│   │   ├── services/           # API services
-│   │   ├── App.jsx             # Main component
-│   │   ├── main.jsx            # Entry point
-│   │   └── index.css           # Global styles
-│   ├── index.html              # HTML template
-│   ├── vite.config.js          # Vite configuration
-│   ├── tailwind.config.js      # Tailwind configuration
-│   └── package.json            # Frontend dependencies
+<img width="542" height="723" alt="image" src="https://github.com/user-attachments/assets/5e4ef6c9-2769-4e91-ba7f-18d8a66195fa" />
+
 
 
 Tech Stack
@@ -71,6 +43,6 @@ Ermartin23
 
 GitHub: @ermartin23
 Project Repository: library-project
-Please:  
+
 
 
