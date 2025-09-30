@@ -19,7 +19,8 @@ export default function BookForm({ onClose }: BookFormProps) {
 
         alert(`Book "${title}" created!`);
 
-        // Close the form after submit
+        // Close 
+        
         onClose();
     };
 

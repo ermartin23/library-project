@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Api.DataAccess; 
+using Api.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,10 +22,17 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 
 app.UseHttpsRedirection();
 
-// End points
-app.MapGet("/", () => "Library API is running ");
+// Endpoint 
+app.MapGet("/", () => "Library API is running");
 
 // Controllers
 app.MapControllers();
+
+// ✅ Run seeding
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
+    DbInitializer.Seed(db);
+}
 
 app.Run();

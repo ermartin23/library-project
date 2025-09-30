@@ -1,21 +1,20 @@
-﻿import axios from "axios";
+﻿// frontend/src/services/api.ts
+import axios from "axios";
 
-// Use your Fly.io API endpoint
-const API_URL = "https://library-api-erica.fly.dev/api";
+// Base URL of your deployed API (Fly.io or local)
+const API_BASE = "https://library-api-erica.fly.dev/api";
 
-export const addBook = async () => {
-    return axios.post(`${API_URL}/book`, {
-        id: crypto.randomUUID(),
-        title: "New Book",
-        pages: 100,
-        genreId: null
-    });
-};
-
-export const deleteBook = async (id: string) => {
-    return axios.delete(`${API_URL}/book/${id}`);
+export const getBooks = async () => {
+    const response = await axios.get(`${API_BASE}/book`);
+    return response.data;
 };
 
 export const getAuthors = async () => {
-    return axios.get(`${API_URL}/author`);
+    const response = await axios.get(`${API_BASE}/author`);
+    return response.data;
+};
+
+export const getGenres = async () => {
+    const response = await axios.get(`${API_BASE}/genre`);
+    return response.data;
 };

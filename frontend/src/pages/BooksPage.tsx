@@ -10,7 +10,7 @@ export default function BooksPage() {
         <div className="min-h-screen bg-base-100 flex flex-col items-center justify-center font-opensans">
             <h1 className="text-4xl font-bold mb-6">Library Books</h1>
 
-            {/* Botones principales */}
+            {/* Buttons */}
             <div className="flex gap-4 mb-6">
                 <button
                     className="btn text-white bg-addGreen hover:opacity-90"
@@ -20,22 +20,22 @@ export default function BooksPage() {
                 </button>
                 <button
                     className="btn text-white bg-deletePink hover:opacity-90"
-                    onClick={() => alert("Delete trigger works!")}
+                    onClick={() => alert("Deleted!")}
                 >
                     Delete
                 </button>
                 <button
                     className="btn text-white bg-authorBlue hover:opacity-90"
-                    onClick={() => alert("See Author trigger works!")}
+                    onClick={() => alert("See Authors!")}
                 >
                     See Author
                 </button>
             </div>
 
-            {/* Formulario al hacer Add */}
+            {/* Fill form when Add */}
             {showForm && <BookForm onClose={() => setShowForm(false)} />}
 
-            {/* Lista de libros */}
+            {/* List of books */}
             <BookList />
         </div>
     );
