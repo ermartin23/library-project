@@ -9,10 +9,15 @@ export default {
             fontFamily: {
                 opensans: ["'Open Sans'", "sans-serif"],
             },
+            colors: {
+                addGreen: "#45ada8",
+                deletePink: "#ff6b6b",
+                authorBlue: "#008c9e",
+            },
         },
     },
     plugins: [require("daisyui")],
     daisyui: {
-        themes: ["cupcake"], // 💖
+        themes: ["cupcake"],
     },
-}
+};

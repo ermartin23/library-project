@@ -4,13 +4,16 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Copy csproj and restore as distinct layers
-COPY Api.csproj ./
-RUN dotnet restore
+# Copy Dependecies 
+COPY ./Api/Api.csproj ./Api/
+RUN dotnet restore ./Api/Api.csproj
 
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o /app/publish
+# Copy Api
+COPY ./Api ./Api
+WORKDIR /src/Api
+
+# Release 
+RUN dotnet publish -c Release -o /app/publish -p:UseAppHost=false
 
 # -------------------------------
 # Stage 2: Runtime
@@ -18,10 +21,11 @@ RUN dotnet publish -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 
-# Copy published files from build stage
+# Copy
 COPY --from=build /app/publish .
 
-# Expose port 8080 (Fly.io default)
+# Port 8080 para Fly.io
 EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "Api.dll"]
+
