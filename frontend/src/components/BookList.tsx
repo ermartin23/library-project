@@ -31,11 +31,11 @@ export default function BookList() {
 
     return (
         <div className="p-4 bg-white shadow-lg rounded-xl mt-6 w-96">
-            <h2 className="text-xl font-bold mb-3"> Book List</h2>
+            <h2 className="text-xl font-bold mb-3">Book List</h2>
             <ul className="list-disc list-inside space-y-2">
-                {books.map((book) => (
-                    <li key={book.id} className="text-gray-700">
-                        {book.title}
+                {books.map((b) => (
+                    <li key={b.id} className="text-gray-700">
+                        {b.title} (AuthorId: {b.authorId}, GenreId: {b.genreId})
                     </li>
                 ))}
             </ul>
