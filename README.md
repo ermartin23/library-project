@@ -9,12 +9,17 @@ A full-stack library management system with CRUD operations, Swagger API documen
 🎨 Simple UI with DaisyUI
 🗄️ Neon Database integration
 
+
 library-project/
+
 <img width="542" height="723" alt="image" src="https://github.com/user-attachments/assets/5e4ef6c9-2769-4e91-ba7f-18d8a66195fa" />
 
 
 
 Tech Stack
+Tools
+
+Rider IDE, GitHub, SQLlite.  
 
 Backend
 .NET Core - Backend framework
@@ -28,9 +33,9 @@ https://library-api-erica.fly.dev/swagger
 
 Frontend
 React + Vite - Frontend framework
-DaisyUI - UI component library
-Tailwind CSS - Utility-first CSS
-JavaScript - Programming language
+DaisyUI - UI - style 
+Tailwind CSS -  CSS style
+JavaScript - languague
 
 Open Application 
 http://localhost:5173
