@@ -5,12 +5,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-// DbContext 
+// DbContext
 builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseNpgsql("Host=ep-tiny-cake-agx7v3eu-pooler.c-2.eu-central-1.aws.neon.tech;Username=neondb_owner;Password=npg_SIGPlrcOy4k8;Database=neondb;SSL Mode=Require;Trust Server Certificate=true"));
 
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// CORS 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -22,13 +34,16 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 
 app.UseHttpsRedirection();
 
-// Endpoint 
-app.MapGet("/", () => "Library API is running");
+//  CORS 
+app.UseCors("AllowFrontend");
 
 // Controllers
 app.MapControllers();
 
-//  seeding
+// check endpoint
+app.MapGet("/", () => "Library API is running");
+
+// Seeding
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();

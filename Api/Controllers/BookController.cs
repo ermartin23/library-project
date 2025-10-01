@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Api.DataAccess;
 using Api.Dtos;
 
@@ -19,12 +20,16 @@ namespace Api.Controllers
         public ActionResult<List<BookDto>> GetAll()
         {
             var books = _context.Books
+                .Include(b => b.Author)
+                .Include(b => b.Genre)
                 .Select(b => new BookDto
                 {
                     Id = b.Id,
                     Title = b.Title,
                     AuthorId = b.AuthorId,
-                    GenreId = b.GenreId
+                    GenreId = b.GenreId,
+                    AuthorName = b.Author.Name,
+                    GenreName = b.Genre.Name
                 })
                 .ToList();
             return Ok(books);
@@ -34,15 +39,20 @@ namespace Api.Controllers
         public ActionResult<BookDto> GetById(int id)
         {
             var book = _context.Books
+                .Include(b => b.Author)
+                .Include(b => b.Genre)
                 .Where(b => b.Id == id)
                 .Select(b => new BookDto
                 {
                     Id = b.Id,
                     Title = b.Title,
                     AuthorId = b.AuthorId,
-                    GenreId = b.GenreId
+                    GenreId = b.GenreId,
+                    AuthorName = b.Author.Name,
+                    GenreName = b.Genre.Name
                 })
                 .FirstOrDefault();
+
             if (book == null) return NotFound();
             return Ok(book);
         }
@@ -58,13 +68,22 @@ namespace Api.Controllers
             };
             _context.Books.Add(book);
             _context.SaveChanges();
-            var result = new BookDto
-            {
-                Id = book.Id,
-                Title = book.Title,
-                AuthorId = book.AuthorId,
-                GenreId = book.GenreId
-            };
+
+            var result = _context.Books
+                .Include(b => b.Author)
+                .Include(b => b.Genre)
+                .Where(b => b.Id == book.Id)
+                .Select(b => new BookDto
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    AuthorId = b.AuthorId,
+                    GenreId = b.GenreId,
+                    AuthorName = b.Author.Name,
+                    GenreName = b.Genre.Name
+                })
+                .First();
+
             return CreatedAtAction(nameof(GetById), new { id = book.Id }, result);
         }
 
@@ -73,10 +92,12 @@ namespace Api.Controllers
         {
             var book = _context.Books.Find(id);
             if (book == null) return NotFound();
+
             book.Title = dto.Title;
             book.AuthorId = dto.AuthorId;
             book.GenreId = dto.GenreId;
             _context.SaveChanges();
+
             return NoContent();
         }
 
@@ -85,8 +106,10 @@ namespace Api.Controllers
         {
             var book = _context.Books.Find(id);
             if (book == null) return NotFound();
+
             _context.Books.Remove(book);
             _context.SaveChanges();
+
             return NoContent();
         }
     }

@@ -4,10 +4,10 @@
     {
         public int Id { get; set; }
         public string Title { get; set; }
-
-        // Use references instead of nested objects
         public int AuthorId { get; set; }
         public int GenreId { get; set; }
+        public string AuthorName { get; set; }
+        public string GenreName { get; set; }
     }
 
     public class BookCreateDto
