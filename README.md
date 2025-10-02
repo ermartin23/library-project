@@ -1,6 +1,6 @@
 Library Books 📚
 
-A full-stack library management system with CRUD operations, Swagger API documentation, and a modern frontend interface.
+A full-stack library  system with CRUD operations, Swagger API documentation, and frontend interface.
 
  Key Features
  Book management (Add, View, Update, Delete)
@@ -35,12 +35,12 @@ Frontend
 React + Vite - Frontend framework
 DaisyUI - UI - style 
 Tailwind CSS -  CSS style
-JavaScript - languague
+JavaScript 
 
 Open Application 
 http://localhost:5173
 
-OBS: Several issues with Docker and dockerfile implementation - working on it!!
+OBS: Several issues with Docker and dockerfile implementation - and test Xunit and data base working on it!!
 
 Screenshot 
 <img width="1707" height="816" alt="image" src="https://github.com/user-attachments/assets/6792805e-02d5-44c4-8124-d186b70a5b80" />
@@ -49,7 +49,7 @@ Screenshot
 Ermartin23
 
 GitHub: @ermartin23
-Project Repository: library-project
+Project Repository: library-project (Main is updated / Frontend branch used only for test frontend
 
 
 
