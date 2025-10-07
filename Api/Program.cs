@@ -37,6 +37,12 @@ app.UseHttpsRedirection();
 //  CORS 
 app.UseCors("AllowFrontend");
 
+using (var scope = app.Services.CreateScope())
+{
+    var books = scope.ServiceProvider.GetRequiredService<LibraryDbContext>().Books.ToList();
+    Console.WriteLine(books.Count);
+}
+
 // Controllers
 app.MapControllers();
 

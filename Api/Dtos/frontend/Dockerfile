@@ -4,14 +4,14 @@
 FROM node:22-slim AS build
 WORKDIR /app
 
-# Copiar archivos de dependencias
+# Copy Dependencies 
 COPY package*.json ./
 RUN npm install
 
-# Copiar el resto del proyecto
+# Copy the project 
 COPY . .
 
-# Construir la app para producción
+# Build app 
 RUN npm run build
 
 # -------------------------------
@@ -20,11 +20,11 @@ RUN npm run build
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
-# Copiar archivos generados en el build
+# Copy from app
 COPY --from=build /app/dist .
 
-# Exponer puerto 80 (Fly.io usará este puerto por defecto)
+# Expose port 
 EXPOSE 80
 
-# Arrancar nginx
+# Start Nginx 
 CMD ["nginx", "-g", "daemon off;"]
