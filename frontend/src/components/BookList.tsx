@@ -1,0 +1,44 @@
+﻿// frontend/src/components/BookList.tsx
+import { useEffect, useState } from "react";
+import { getBooks } from "../services/api";
+
+interface Book {
+    id: number;
+    title: string;
+    authorId: number;
+    genreId: number;
+}
+
+export default function BookList() {
+    const [books, setBooks] = useState<Book[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        getBooks()
+            .then((data) => {
+                setBooks(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error fetching books:", error);
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) {
+        return <p>Loading books...</p>;
+    }
+
+    return (
+        <div className="p-4 bg-white shadow-lg rounded-xl mt-6 w-96">
+            <h2 className="text-xl font-bold mb-3">Book List</h2>
+            <ul className="list-disc list-inside space-y-2">
+                {books.map((b) => (
+                    <li key={b.id} className="text-gray-700">
+                        {b.title} (AuthorId: {b.authorId}, GenreId: {b.genreId})
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
